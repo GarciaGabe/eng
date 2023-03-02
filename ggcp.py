@@ -62,7 +62,9 @@ def linha_neutra_cp_ret(bw, h, fc, Ap, eps_pn, dp, ds, Md):
     continuar = 1
     sigma_s = round(50/1.15 ,2)      # chute inicial para tensão da armadura passiva
     sigma_p = round(190*0.9/1.15,2)  # chute inicial para tensão da armadura ativa
+    cont = 0
     while (continuar):
+        cont = cont +1
         Rpt = sigma_p*Ap
         a_bh = 1
         b_bh = -2.5*ds
@@ -80,9 +82,12 @@ def linha_neutra_cp_ret(bw, h, fc, Ap, eps_pn, dp, ds, Md):
         sigma_p2 = round(tensCalc_cp190(eps_p),2)
         sigma_s2 = round(tensCalc_CA50(eps_s),2)
         
-        if (sigma_p == sigma_p2):
-            if (sigma_s == sigma_s2):
+        if (round(sigma_p,2) == round(sigma_p2,2)):
+            if (round(sigma_s,2) == round(sigma_s2,2)):
                 continuar = continuar -1
-        pass
+        
+        if (cont >= 100):
+            continuar = continuar - 1
+        
     retorno = [round(x,2),round(eps_p,5),round(eps_s,5),round(Rpt,2),sigma_s,sigma_p]
     return retorno
