@@ -1,10 +1,31 @@
 # Arquivo auxiliar para definição de funções
+import numpy as np
+
 
 
 
 # Calculo do coeficiente PSI para relaxação do aço
 # A partir de um certo nível de tensão:
 def calcpsi(tensao):
+    psi = np.zeros(tensao.size)
+    for i in range(tensao.size):
+        if (tensao[i] <= 0.5):
+            psi[i] = 0
+        elif (tensao[i] <= 0.6):
+            extra = tensao[i] - 0.5
+            adicional = 13*extra
+            psi[i] = (0+adicional)/100
+        elif (tensao[i] <= 0.7):
+            extra = tensao[i] - 0.6
+            adicional = 12*extra
+            psi[i] = (1.3+adicional)/100
+        else:
+            extra = tensao[i] - 0.7
+            adicional = 10*extra
+            psi[i] = (2.5+adicional)/100
+    return psi
+    
+def calcps(tensao):
     if (tensao <= 0.5):
         return 0
     elif (tensao <= 0.6):
@@ -20,6 +41,7 @@ def calcpsi(tensao):
         adicional = 10*extra
         return (2.5+adicional)/100
     
+
 # Retorna a tensão no aço CP-190 para uma dada deformação
 def tensCalc_cp190(x):
     Ep = 20000
